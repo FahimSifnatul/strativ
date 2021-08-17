@@ -17,9 +17,10 @@ from django.contrib import admin
 from django.urls import path
 
 # custom views
-from strativ_api.views import CollectAPI
+from strativ_api.views import CollectAPI, ListCountries
 
 urlpatterns = [
     path('collect-api/', CollectAPI.as_view(), name='collect-api'),
+    path('list-countries/', ListCountries.as_view(), name='list-countries'),
     path('admin/', admin.site.urls),
 ]

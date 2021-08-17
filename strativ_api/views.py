@@ -47,3 +47,10 @@ class CollectAPI(APIView):
 			Countries.objects.bulk_create(APIData)
 
 		return Response(countries)
+
+
+class ListCountries(APIView):
+	def get(self, request, *args, **kwargs):
+		country_list = Countries.objects.all()
+		country_list_serializer = CountriesSerializer(country_list, many=True)
+		return Response(country_list_serializer.data)
