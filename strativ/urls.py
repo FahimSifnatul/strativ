@@ -17,7 +17,9 @@ from django.contrib import admin
 from django.urls import path
 
 # custom views
+from strativ_api.views import CollectAPI
 
 urlpatterns = [
+    path('collect-api/', CollectAPI.as_view(), name='collect-api'),
     path('admin/', admin.site.urls),
 ]
