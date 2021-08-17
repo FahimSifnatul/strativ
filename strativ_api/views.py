@@ -129,8 +129,23 @@ class NeighbouringCountries(APIView):
 class SameLanguageCountries(APIView):
 	def get(self, request, language, *args, **kwargs):
 		try:
-			language
-			countries_same_language = Countries.objects.filter(languages__icontains=language)
+			# To match as last language
+			language_prefix = ' ' + language
+			countries_same_language_prefix = Countries.objects.filter(languages__iendswith=language_prefix)
+			
+			# To match as first language
+			language_suffix = language + ','
+			countries_same_language_suffix = Countries.objects.filter(languages__istartswith=language_suffix)
+			
+			# To match as middle language
+			language_middle = ' ' + language + ','
+			countries_same_language_middle = Countries.objects.filter(languages__icontains=language_middle)
+
+			# To match as single language
+			countries_same_language = Countries.objects.filter(languages__iexact=language)
+
+			countries_same_language = countries_same_language | countries_same_language_prefix | countries_same_language_suffix | countries_same_language_middle
+	
 			countries_same_language_serializer = CountriesSerializer(instance=countries_same_language, many=True)
 			return Response(countries_same_language_serializer.data)
 		except:
