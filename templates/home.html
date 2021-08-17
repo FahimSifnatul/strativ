@@ -38,8 +38,8 @@
 	  		<img src="{% static 'images/logo.png' %}" alt="logo" width="32">
 		</a>
 		<!-- Search Country -->
-		<form id="country_search_form" class="form-inline ml-auto" method="POST"> {% csrf_token %}
-    		<input class="form-control form-control-sm mr-sm-2" type="text" placeholder="Search by country">
+		<form id="search_country_form" class="form-inline ml-auto" method="POST" name="search_country_form"> {% csrf_token %}
+    		<input id="search_country_text" class="form-control form-control-sm mr-sm-2" type="text" placeholder="Search by country" name="search_country_text">
     		<button class="btn btn-sm btn-primary" type="submit">Search</button>
   		</form>
 	</nav>
@@ -63,6 +63,7 @@
 			</thead>
 			<tbody>
 				{% for country in countries %}
+					
 					<tr>
 						<td>{{country.name}}</td>
 						<td>{{country.alpha2code}}</td>
