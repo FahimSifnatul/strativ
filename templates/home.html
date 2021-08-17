@@ -44,5 +44,36 @@
   		</form>
 	</nav>
 
+	<!-- Table to show country data -->
+	<div class="container text-center text-primary">
+		<img src="https://i.imgur.com/OCgrAHo.gif">
+	</div>
+	<table class="container rounded-lg table table-primary table-striped text-center">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>AlphaCode2</th>
+				<th>Capital</th>
+				<th>Population</th>
+				<th>Timezone</th>
+				<th>Flag</th>
+				<th>Details</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for country in countries %}
+				<tr>
+					<td>{{country.name}}</td>
+					<td>{{country.alpha2code}}</td>
+					<td>{{country.capital}}</td>
+					<td>{{country.population}}</td>
+					<td>{{country.timezones}}</td>
+					<td><img src="{{country.flag}}" width="40" height="25"></td>
+				</tr>
+			{% endfor %}	
+		</tbody>
+		
+	</table>
+
 </body>
 </html>
