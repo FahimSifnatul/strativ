@@ -25,9 +25,9 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-	<!-- custom links & scripts -->
+	<!-- custom links & scripts 
 	<script src="{% static 'js/main.js' %}"></script>
-	<link rel="stylesheet" href="{% static 'css/main.css' %}">  
+	<link rel="stylesheet" href="{% static 'css/main.css' %}">  -->
 </head>
 
 <body>
@@ -45,35 +45,36 @@
 	</nav>
 
 	<!-- Table to show country data -->
-	<div class="container text-center text-primary">
-		<img src="https://i.imgur.com/OCgrAHo.gif">
+	<div class="container-fluid text-center text-primary">
+		<img src="https://i.imgur.com/OCgrAHo.gif" style="width:50vw;height:12vh;">
 	</div>
-	<table class="container rounded-lg table table-primary table-striped text-center">
-		<thead>
-			<tr>
-				<th>Name</th>
-				<th>AlphaCode2</th>
-				<th>Capital</th>
-				<th>Population</th>
-				<th>Timezone</th>
-				<th>Flag</th>
-				<th>Details</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for country in countries %}
+	<div class="table-responsive-sm">
+		<table class="container rounded-lg table table-primary table-striped text-center">
+			<thead>
 				<tr>
-					<td>{{country.name}}</td>
-					<td>{{country.alpha2code}}</td>
-					<td>{{country.capital}}</td>
-					<td>{{country.population}}</td>
-					<td>{{country.timezones}}</td>
-					<td><img src="{{country.flag}}" width="40" height="25"></td>
+					<th>Name</th>
+					<th>AlphaCode2</th>
+					<th>Capital</th>
+					<th>Population</th>
+					<th>Timezone</th>
+					<th>Flag</th>
+					<th>Details</th>
 				</tr>
-			{% endfor %}	
-		</tbody>
-		
-	</table>
+			</thead>
+			<tbody>
+				{% for country in countries %}
+					<tr>
+						<td>{{country.name}}</td>
+						<td>{{country.alpha2code}}</td>
+						<td>{{country.capital}}</td>
+						<td>{{country.population}}</td>
+						<td>{{country.timezones}}</td>
+						<td><img src="{{country.flag}}" width="40" height="25"></td>
+					</tr>
+				{% endfor %}	
+			</tbody>
+		</table>
+	</div>
 
 </body>
 </html>
