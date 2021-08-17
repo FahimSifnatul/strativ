@@ -84,7 +84,7 @@ class CreateCountry(APIView):
 			return Response(context)
 
 class UpdateCountry(APIView):   
-	def post(self, request, country_name, *args, **kwargs):
+	def put(self, request, country_name, *args, **kwargs):
 		try:
 			country_update = Countries.objects.get(name=country_name)
 			country_update_serializer = CountriesSerializer(instance=country_update,
@@ -99,4 +99,18 @@ class UpdateCountry(APIView):
 		except:
 			context = {}
 			context['ValiData'] = 'Please provide valid data'
+			return Response(context)
+
+class DeleteCountry(APIView):
+	def delete(self, request, country_name, *args, **kwargs):
+		try:
+			country_delete = Countries.objects.get(name=country_name)
+			country_delete.delete()
+
+			context = {}
+			context['Delete'] = 'Successful data deletion'
+			return Response(context)
+		except:
+			context = {}
+			context['Delete'] = 'Country named ' + country_name + ' does not exists'
 			return Response(context)
