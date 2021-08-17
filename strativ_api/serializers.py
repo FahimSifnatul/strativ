@@ -2,7 +2,7 @@ from rest_framework import serializers
 # custom models
 from .models import Countries
 
-class CountriesSerialier(serializers.HyperlinkedModelSerializer):
+class CountriesSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = Countries
 		fields = '__all__'
