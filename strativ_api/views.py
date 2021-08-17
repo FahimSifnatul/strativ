@@ -66,3 +66,11 @@ class DetailsCountry(APIView):
 			context = {}
 			context['NoCountryExists'] = "There is no country named " + country_name
 			return Response(context)
+
+
+class CreateCountry(APIView):
+	def post(self, request, *args, **kwargs):
+		country_create_serializer = CountriesSerializer(data=request.data)
+		if country_create_serializer.is_valid():
+			country_create_serializer.save()
+		return Response(country_create_serializer.data)
