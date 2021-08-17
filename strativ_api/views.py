@@ -130,21 +130,22 @@ class SameLanguageCountries(APIView):
 	def get(self, request, language, *args, **kwargs):
 		try:
 			# To match as last language
-			language_prefix = ' ' + language
-			countries_same_language_prefix = Countries.objects.filter(languages__iendswith=language_prefix)
+			language_last = ' ' + language
+			countries_same_language_last = Countries.objects.filter(languages__iendswith=language_last)
 			
 			# To match as first language
-			language_suffix = language + ','
-			countries_same_language_suffix = Countries.objects.filter(languages__istartswith=language_suffix)
+			language_first = language + ','
+			countries_same_language_first = Countries.objects.filter(languages__istartswith=language_first)
 			
 			# To match as middle language
 			language_middle = ' ' + language + ','
 			countries_same_language_middle = Countries.objects.filter(languages__icontains=language_middle)
 
 			# To match as single language
-			countries_same_language = Countries.objects.filter(languages__iexact=language)
+			countries_same_language_exact = Countries.objects.filter(languages__iexact=language)
 
-			countries_same_language = countries_same_language | countries_same_language_prefix | countries_same_language_suffix | countries_same_language_middle
+			# django style of adding two querysets (| or &)
+			countries_same_language = countries_same_language_exact | countries_same_language_first | countries_same_language_last | countries_same_language_middle
 	
 			countries_same_language_serializer = CountriesSerializer(instance=countries_same_language, many=True)
 			return Response(countries_same_language_serializer.data)
@@ -153,3 +154,30 @@ class SameLanguageCountries(APIView):
 			context['ValidData'] = 'Please provide valid data'
 			return Response(context)
 
+class SearchCountry(APIView):
+	def get(self, request, country_name, *args, **kwargs):
+		try:
+			# To search partial name as first name of country
+			country_search_first = country_name + ' '
+			country_search_first = Countries.objects.filter(name__istartswith=country_search_first)
+			
+			# To search partial name as middle name of country
+			country_search_middle = ' ' + country_name + ' '
+			country_search_middle = Countries.objects.filter(name__icontains=country_search_middle)
+			
+			# To search partial name as last name of country
+			country_search_last = ' ' + country_name
+			country_search_last = Countries.objects.filter(name__iendswith=country_search_last)
+			
+			# To search exact name of country
+			country_search_exact = Countries.objects.filter(name__iexact=country_name)
+			
+			# django style to add querysets (| or &)
+			country_search = country_search_exact | country_search_first | country_search_middle | country_search_last
+
+			country_search_serializer = CountriesSerializer(instance=country_search, many=True)
+			return Response(country_search_serializer.data)
+		except:
+			context = {}
+			context['ValidData'] = 'Please provide valid data'
+			return Response(context)

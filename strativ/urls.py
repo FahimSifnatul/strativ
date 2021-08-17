@@ -19,7 +19,8 @@ from django.urls import path
 # custom views
 from strativ_api.views import CollectAPI, ListCountries, DetailsCountry, \
                               CreateCountry, UpdateCountry, DeleteCountry,\
-                              NeighbouringCountries, SameLanguageCountries
+                              NeighbouringCountries, SameLanguageCountries,\
+                              SearchCountry
 
 urlpatterns = [
     path('collect-api/', CollectAPI.as_view(), name='collect-api'),
@@ -30,5 +31,6 @@ urlpatterns = [
     path('delete-country/<country_name>', DeleteCountry.as_view(), name='delete-country'),
     path('neighbouring-countries/<country_name>', NeighbouringCountries.as_view(), name='neighbouring-countries'),
     path('same-language-countries/<language>', SameLanguageCountries.as_view(), name='same-language-countries'),
+    path('search-country/<country_name>', SearchCountry.as_view(), name='search-country'),
     path('admin/', admin.site.urls),
 ]
