@@ -9,6 +9,7 @@ from .models import Countries
 from .serializers import CountriesSerializer
 
 # Create your views here.
+# RESTful APIs
 class CollectAPI(APIView):
 	def get(self, request, *args, **kwargs):
 		url = 'https://restcountries.eu/rest/v2/all'
@@ -55,7 +56,6 @@ class ListCountries(APIView):
 		country_list_serializer = CountriesSerializer(country_list, many=True)
 		return Response(country_list_serializer.data)
 
-
 class DetailsCountry(APIView):
 	def get(self, request, country_name, *args, **kwargs):
 		try:
@@ -67,10 +67,36 @@ class DetailsCountry(APIView):
 			context['NoCountryExists'] = "There is no country named " + country_name
 			return Response(context)
 
-
 class CreateCountry(APIView):
 	def post(self, request, *args, **kwargs):
-		country_create_serializer = CountriesSerializer(data=request.data)
-		if country_create_serializer.is_valid():
-			country_create_serializer.save()
-		return Response(country_create_serializer.data)
+		try:
+			country_create_serializer = CountriesSerializer(data=request.data)
+			if country_create_serializer.is_valid():
+				country_create_serializer.save()
+				return Response(country_create_serializer.data)
+			else:
+				context = {}
+				context['ValiData'] = 'Please provide valid data'
+				return Response(context)
+		except: 
+			context = {}
+			context['ValiData'] = 'Please provide valid data'
+			return Response(context)
+
+class UpdateCountry(APIView):   
+	def post(self, request, country_name, *args, **kwargs):
+		try:
+			country_update = Countries.objects.get(name=country_name)
+			country_update_serializer = CountriesSerializer(instance=country_update,
+															data=request.data)
+			if country_update_serializer.is_valid():
+				country_update_serializer.save()
+				return Response(country_update_serializer.data)
+			else:
+				context = {}
+				context['ValiData'] = 'Please provide valid data'
+				return Response(context)
+		except:
+			context = {}
+			context['ValiData'] = 'Please provide valid data'
+			return Response(context)
