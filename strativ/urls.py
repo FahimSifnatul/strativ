@@ -21,8 +21,12 @@ from strativ_api.views import CollectAPI, ListCountries, DetailsCountry, \
                               CreateCountry, UpdateCountry, DeleteCountry,\
                               NeighbouringCountries, SameLanguageCountries,\
                               SearchCountry
+from home.views import Home
 
 urlpatterns = [
+    path('', Home.as_view(), name='home'),
+
+    # API URLs
     path('collect-api/', CollectAPI.as_view(), name='collect-api'),
     path('list-countries/', ListCountries.as_view(), name='list-countries'),
     path('details-country/<country_name>', DetailsCountry.as_view(), name='details-country'),
