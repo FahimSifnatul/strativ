@@ -6,3 +6,8 @@ class CountriesSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Countries
 		fields = '__all__'
+
+class NeighbouringCountriesSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Countries
+		fields = ['name', 'borders']

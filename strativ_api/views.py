@@ -6,7 +6,7 @@ from urllib.request import urlopen
 
 # custom 
 from .models import Countries
-from .serializers import CountriesSerializer
+from .serializers import CountriesSerializer, NeighbouringCountriesSerializer
 
 # Create your views here.
 # RESTful APIs
@@ -53,14 +53,14 @@ class CollectAPI(APIView):
 class ListCountries(APIView):
 	def get(self, request, *args, **kwargs):
 		country_list = Countries.objects.all()
-		country_list_serializer = CountriesSerializer(country_list, many=True)
+		country_list_serializer = CountriesSerializer(instance=country_list, many=True)
 		return Response(country_list_serializer.data)
 
 class DetailsCountry(APIView):
 	def get(self, request, country_name, *args, **kwargs):
 		try:
 			country_details = Countries.objects.get(name=country_name)
-			country_details_serializer = CountriesSerializer(country_details, many=False)
+			country_details_serializer = CountriesSerializer(instance=country_details, many=False)
 			return Response(country_details_serializer.data)
 		except:
 			context = {}
@@ -113,4 +113,16 @@ class DeleteCountry(APIView):
 		except:
 			context = {}
 			context['Delete'] = 'Country named ' + country_name + ' does not exists'
+			return Response(context)
+
+class NeighbouringCountries(APIView):
+	def get(self, request, country_name, *args, **kwargs):
+		try:
+			countries_neighbouring = Countries.objects.get(name=country_name)
+			countries_neighbouring_serializer = NeighbouringCountriesSerializer(instance=countries_neighbouring)
+			print(countries_neighbouring_serializer.data)
+			return Response(countries_neighbouring_serializer.data)
+		except:
+			context = {}
+			context['ValiData'] = 'Please provide valid data'
 			return Response(context)
