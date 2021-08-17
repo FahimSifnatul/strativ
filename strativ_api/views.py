@@ -76,11 +76,11 @@ class CreateCountry(APIView):
 				return Response(country_create_serializer.data)
 			else:
 				context = {}
-				context['ValiData'] = 'Please provide valid data'
+				context['ValidData'] = 'Please provide valid data'
 				return Response(context)
 		except: 
 			context = {}
-			context['ValiData'] = 'Please provide valid data'
+			context['ValidData'] = 'Please provide valid data'
 			return Response(context)
 
 class UpdateCountry(APIView):   
@@ -94,11 +94,11 @@ class UpdateCountry(APIView):
 				return Response(country_update_serializer.data)
 			else:
 				context = {}
-				context['ValiData'] = 'Please provide valid data'
+				context['ValidData'] = 'Please provide valid data'
 				return Response(context)
 		except:
 			context = {}
-			context['ValiData'] = 'Please provide valid data'
+			context['ValidData'] = 'Please provide valid data'
 			return Response(context)
 
 class DeleteCountry(APIView):
@@ -120,9 +120,21 @@ class NeighbouringCountries(APIView):
 		try:
 			countries_neighbouring = Countries.objects.get(name=country_name)
 			countries_neighbouring_serializer = NeighbouringCountriesSerializer(instance=countries_neighbouring)
-			print(countries_neighbouring_serializer.data)
 			return Response(countries_neighbouring_serializer.data)
 		except:
 			context = {}
-			context['ValiData'] = 'Please provide valid data'
+			context['ValidData'] = 'Please provide valid data'
 			return Response(context)
+
+class SameLanguageCountries(APIView):
+	def get(self, request, language, *args, **kwargs):
+		try:
+			language
+			countries_same_language = Countries.objects.filter(languages__icontains=language)
+			countries_same_language_serializer = CountriesSerializer(instance=countries_same_language, many=True)
+			return Response(countries_same_language_serializer.data)
+		except:
+			context = {}
+			context['ValidData'] = 'Please provide valid data'
+			return Response(context)
+
