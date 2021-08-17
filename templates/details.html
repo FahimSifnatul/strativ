@@ -34,51 +34,35 @@
 	<!-- navigation bar -->
 	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
 		<!-- Logo -->
-		<a class="navbar-brand" href="#">
+		<a class="navbar-brand" href="http://127.0.0.1:8000/">
 	  		<img src="{% static 'images/logo.png' %}" alt="logo" width="32">
 		</a>
-		<!-- Search Country -->
-		<form id="country_search_form" class="form-inline ml-auto" method="POST"> {% csrf_token %}
-    		<input class="form-control form-control-sm mr-sm-2" type="text" placeholder="Search by country">
-    		<button class="btn btn-sm btn-primary" type="submit">Search</button>
-  		</form>
 	</nav>
 
-	<!-- Table to show country data -->
-	<div class="container-fluid text-center text-primary">
-		<img src="https://i.imgur.com/OCgrAHo.gif" style="width:50vw;height:12vh;">
-	</div>
-	<div class="table-responsive-sm">
-		<table class="container rounded-lg table table-primary table-striped text-center">
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>AlphaCode2</th>
-					<th>Capital</th>
-					<th>Population</th>
-					<th>Timezone</th>
-					<th>Flag</th>
-					<th>Details</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for country in countries %}
-					<tr>
-						<td>{{country.name}}</td>
-						<td>{{country.alpha2code}}</td>
-						<td>{{country.capital}}</td>
-						<td>{{country.population}}</td>
-						<td>{{country.timezones}}</td>
-						<td><img src="{{country.flag}}" width="40" height="30"></td>
-						<td>
-							<form id="{{country.name}}" method="POST">
-								<input class="btn btn-primary" type="submit" name="{{country.name}}" value="Details">
-							</form>
-						</td>
-					</tr>
-				{% endfor %}	
-			</tbody>
-		</table>
+	<!-- Image to show country map -->
+	<div class="card mx-auto" style="width:50vw;height:80vh;top:1vh;">
+		<img class="card-img-top w-100 h-50" src="{{flag}}">
+		<div class="card-body">
+			<div class="card-text table-responsive-sm">
+				<table class="table table-light border-0 w-100">
+					<tbody>
+						<tr>
+							<td><b>Country Name:</b></td>
+							<td>{{name}}</td>
+						</tr>
+						<tr>
+							<td><b>Neighbouring Countries:</b></td>
+							<td>{{borders}}</td>
+						</tr>
+						<tr>
+							<td><b>Languages:</b></td>
+							<td>{{languages}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+		</div>
 	</div>
 
 </body>
