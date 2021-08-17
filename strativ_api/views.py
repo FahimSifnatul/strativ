@@ -54,3 +54,15 @@ class ListCountries(APIView):
 		country_list = Countries.objects.all()
 		country_list_serializer = CountriesSerializer(country_list, many=True)
 		return Response(country_list_serializer.data)
+
+
+class DetailsCountry(APIView):
+	def get(self, request, country_name, *args, **kwargs):
+		try:
+			country_details = Countries.objects.get(name=country_name)
+			country_details_serializer = CountriesSerializer(country_details, many=False)
+			return Response(country_details_serializer.data)
+		except:
+			context = {}
+			context['NoCountryExists'] = "There is no country named " + country_name
+			return Response(context)
