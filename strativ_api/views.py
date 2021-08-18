@@ -1,8 +1,7 @@
 from django.shortcuts import render, redirect, reverse
 from rest_framework.views import APIView
-from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
-from urllib.request import urlopen
+import requests # great module for simple http requests and responses
 
 # custom 
 from .models import Countries
@@ -14,7 +13,7 @@ class CollectAPI(APIView):
 	def get(self, request, *args, **kwargs):
 		if request.user.is_authenticated:
 			url = 'https://restcountries.eu/rest/v2/all'
-			countries = JSONParser().parse(urlopen(url)) 
+			countries = requests.get(url).json()
 
 			check_len = len(Countries.objects.all())
 			if check_len == 0: # means collected api data is not yet stored in model
@@ -50,8 +49,6 @@ class CollectAPI(APIView):
 			return Response(countries)
 		
 		else:
-			context = {}
-			context['user_authenticated'] = 'false'
 			return redirect(reverse('home'))
 
 
@@ -63,8 +60,6 @@ class ListCountries(APIView):
 			return Response(country_list_serializer.data)
 
 		else:
-			context = {}
-			context['user_authenticated'] = 'false'
 			return redirect(reverse('home'))
 
 
@@ -81,8 +76,6 @@ class DetailsCountry(APIView):
 				return Response(context)
 
 		else:
-			context = {}
-			context['user_authenticated'] = 'false'
 			return redirect(reverse('home'))
 
 
@@ -104,8 +97,6 @@ class CreateCountry(APIView):
 				return Response(context)
 
 		else:
-			context = {}
-			context['user_authenticated'] = 'false'
 			return redirect(reverse('home'))
 
 
@@ -129,8 +120,6 @@ class UpdateCountry(APIView):
 				return Response(context)
 
 		else:
-			context = {}
-			context['user_authenticated'] = 'false'
 			return redirect(reverse('home'))
 
 
@@ -150,8 +139,6 @@ class DeleteCountry(APIView):
 				return Response(context)
 
 		else:
-			context = {}
-			context['user_authenticated'] = 'false'
 			return redirect(reverse('home'))
 
 
@@ -168,8 +155,6 @@ class NeighbouringCountries(APIView):
 				return Response(context)
 
 		else:
-			context = {}
-			context['user_authenticated'] = 'false'
 			return redirect(reverse('home'))
 
 
@@ -203,15 +188,13 @@ class SameLanguageCountries(APIView):
 				return Response(context)
 
 		else:
-			context = {}
-			context['user_authenticated'] = 'false'
 			return redirect(reverse('home'))
 
 
 class SearchCountry(APIView):
 	def get(self, request, country_name, *args, **kwargs):
+		print(request.user)
 		if request.user.is_authenticated:
-			print('search-country')
 			try:
 				# To search partial name as first name of country
 				country_search_first = country_name + ' '
@@ -239,6 +222,5 @@ class SearchCountry(APIView):
 				return Response(context)
 
 		else:
-			context = {}
-			context['user_authenticated'] = 'false'
+			print('API fail')
 			return redirect(reverse('home'))

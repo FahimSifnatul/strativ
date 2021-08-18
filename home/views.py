@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser
-from urllib.request import urlopen, Request
+import requests # simply great module for simple http actions
 
 # custom
 from strativ_api.models import Countries
@@ -16,9 +16,9 @@ class Home(APIView):
 		context = {}
 		if request.user.is_authenticated:
 			context['user_authenticated'] = 'true'
+			context['countries'] = Countries.objects.all()
 		else:
 			context['user_authenticated'] = 'false'
-		context['countries'] = Countries.objects.all()
 		
 		return render(request, 'home.html', context)
 
@@ -26,8 +26,7 @@ class Home(APIView):
 	def post(self, request, *args, **kwargs):
 		if 'search_country_submit' in request.POST:
 			name = request.POST['search_country_text']
-			http_response_object = urlopen('http://127.0.0.1:8000/search-country/'+name)
-			print(http_response_object)
+			http_response_object = requests.get('http://127.0.0.1:8000/search-country/'+name, params={})
 			
 			country = JSONParser().parse(http_response_object)
 			if len(country) == 0:
