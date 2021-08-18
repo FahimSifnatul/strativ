@@ -27,8 +27,13 @@ class Home(APIView):
 		if 'search_country_submit' in request.POST:
 			name = request.POST['search_country_text']
 			# Reason to set password in session variable is that django doesn't store raw password. But for authentication we need raw password.
-			country = requests.get('http://127.0.0.1:8000/search-country/'+name,
-						auth=(request.user.username, request.session['PASSWORD'])).json()
+			country = ''
+			try:
+				country = requests.get('http://127.0.0.1:8000/search-country/'+name,
+							auth=(request.user.username, request.session['PASSWORD'])).json()
+			except:
+				country = requests.get('strativ-assignment.herokuapp.com/search-country/'+name,
+							auth=(request.user.username, request.session['PASSWORD'])).json()
 			
 			if len(country) == 0:
 				return HttpResponse("<h1>No country exists with the name '" + name + "'</h1>")
