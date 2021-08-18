@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <!-- Web app logo -->
 <p align="center">
 	<img src="https://github.com/FahimSifnatul/strativ/blob/master/static/images/logo.png" width="300" height="300">
@@ -146,6 +145,3 @@ python manage.py runserver 127.0.0.1:8000
 <p align="justify">
 	Countries!!! web app can be copied, modified, distributed for both personal and commercial purposes under <a href="https://opensource.org/licenses/MIT">MIT License</a>
 </p>
-=======
-# strativ
->>>>>>> 2a1624a84b6d162afdda6dd8fa8a52f27c730349
