@@ -133,7 +133,7 @@ python manage.py runserver 127.0.0.1:8000
 ```	
 
 <p align="justify">
-	After Sign in/up, please run <a href="http://127.0.0.1:8000/collect-api"><code>collect-api</code></a> API on browser to collect countries data from <a href="https://restcountries.eu/rest/v2/all">REST Countries API</a>
+	Done. Simple, isn't it? Enjoy rich data about all countries of the world.
 </p>
 
 

@@ -15,6 +15,13 @@ class Home(APIView):
 	def get(self, request, *args, **kwargs):
 		context = {}
 		if request.user.is_authenticated:
+			try:
+				requests.get('http://127.0.0.1:8000/collect-api',
+							auth=(request.user.username, request.session['PASSWORD']))
+			except:
+				requests.get('strativ-assignment.herokuapp.com/collect-api',
+							auth=(request.user.username, request.session['PASSWORD']))
+			request.get()
 			context['user_authenticated'] = 'true'
 			context['countries'] = Countries.objects.all()
 		else:
