@@ -19,12 +19,15 @@ class Home(APIView):
 		else:
 			context['user_authenticated'] = 'false'
 		context['countries'] = Countries.objects.all()
+		
 		return render(request, 'home.html', context)
 
+
 	def post(self, request, *args, **kwargs):
-		if 'search_country_text' in request.POST:
+		if 'search_country_submit' in request.POST:
 			name = request.POST['search_country_text']
 			http_response_object = urlopen('http://127.0.0.1:8000/search-country/'+name)
+			print(http_response_object)
 			
 			country = JSONParser().parse(http_response_object)
 			if len(country) == 0:
@@ -36,8 +39,10 @@ class Home(APIView):
 			else:
 				context['user_authenticated'] = 'false'
 			context['countries'] = country
+			
 			return render(request, 'home.html', context)
 		
+
 		elif 'sign_in_submit' in request.POST: # sign in checking
 			username = request.POST['username']
 			password = request.POST['password']
@@ -51,7 +56,9 @@ class Home(APIView):
 			else: # no user exists
 				context['user_authenticated'] = 'false'
 				messages.error(request, 'Hey ' + username + ', we appreciate your login try. But would you please check your username and password once more?')
+			
 			return render(request, 'home.html', context)
+
 
 		elif 'sign_up_submit' in request.POST: # sign up checking
 			new_username = request.POST['new_username']
@@ -84,8 +91,9 @@ class Home(APIView):
 			
 			return render(request, 'home.html', context)
 
-		else:
-			print(request.POST)
+
+		else: # To display details of the selected country
+
 			country_name = list(request.POST.items())[1][0] # To retrieve country name from Form name
 			country = Countries.objects.get(name=country_name)
 
