@@ -19,7 +19,7 @@ class Home(APIView):
 				requests.get('http://127.0.0.1:8000/collect-api',
 							auth=(request.user.username, request.session['PASSWORD']))
 			except:
-				requests.get('strativ-assignment.herokuapp.com/collect-api',
+				requests.get('http://strativ-assignment.herokuapp.com/collect-api',
 							auth=(request.user.username, request.session['PASSWORD']))
 			request.get()
 			context['user_authenticated'] = 'true'
@@ -39,7 +39,7 @@ class Home(APIView):
 				country = requests.get('http://127.0.0.1:8000/search-country/'+name,
 							auth=(request.user.username, request.session['PASSWORD'])).json()
 			except:
-				country = requests.get('strativ-assignment.herokuapp.com/search-country/'+name,
+				country = requests.get('http://strativ-assignment.herokuapp.com/search-country/'+name,
 							auth=(request.user.username, request.session['PASSWORD'])).json()
 			
 			if len(country) == 0:
