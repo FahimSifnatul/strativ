@@ -10,18 +10,23 @@ import requests # simply great module for simple http actions
 # custom
 from strativ_api.models import Countries
 
+# To retrieve countries data from external API at the time of sign in/up
+def collect_api(request):
+	if request.user.is_authenticated:
+		try:
+			requests.get('http://127.0.0.1:8000/collect-api',
+						auth=(request.user.username, request.session['PASSWORD']))
+		except:
+			requests.get('http://strativ-assignment.herokuapp.com/collect-api',
+						auth=(request.user.username, request.session['PASSWORD']))
+	return 0
+
 # Create your views here.
 class Home(APIView):
 	def get(self, request, *args, **kwargs):
 		context = {}
 		if request.user.is_authenticated:
-			try:
-				requests.get('http://127.0.0.1:8000/collect-api',
-							auth=(request.user.username, request.session['PASSWORD']))
-			except:
-				requests.get('http://strativ-assignment.herokuapp.com/collect-api',
-							auth=(request.user.username, request.session['PASSWORD']))
-			request.get()
+			collect_api(request)
 			context['user_authenticated'] = 'true'
 			context['countries'] = Countries.objects.all()
 		else:
@@ -65,6 +70,7 @@ class Home(APIView):
 				login(request, user)
 				request.session['PASSWORD'] = password # For API data access purpose
 				
+				collect_api(request)
 				context['user_authenticated'] = 'true'
 				context['countries'] = Countries.objects.all()
 			
@@ -99,6 +105,7 @@ class Home(APIView):
 					login(request, user)
 					request.session['PASSWORD'] = new_password # For API data access purpose
 					
+					collect_api(request)
 					context['user_authenticated'] = 'true'
 					context['countries'] = Countries.objects.all()
 					messages.success(request, 'Congratulations ' + new_username + '!!! You are now a member of our Countries!!! family')
