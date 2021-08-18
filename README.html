@@ -132,6 +132,28 @@ python manage.py migrate
 python manage.py runserver 127.0.0.1:8000
 ```	
 
+<p align="justify">
+	After Sign in/up, please run <a href="http://127.0.0.1:8000/collect-api"><code>collect-api</code></a> API on browser to collect countries data from <a href="https://restcountries.eu/rest/v2/all">REST Countries API</a>
+</p>
+
+
+
+<h2>RESTful APIs</h2>
+<ol>
+	<li><code>/collect-api</code> - To collect details data from <a href="https://restcountries.eu/rest/v2/all">REST Countries API</a></li>
+	<li><code>/list-countries</code> - Returns details info about all countries in JSON format</li>
+	<li><code>/details-country/<<span>country_name</span>></code> - Return details info about specific country in JSON format</li>
+	<li><code>/create-country/</code> - To create new country data</li>
+	<li><code>/update-country/<<span>country_name</span>></code> - To update existing country data</li>
+	<li><code>/delete-country/<<span>country_name</span>></code> - To delete specific country data</li>
+	<li><code>/neighbouring-countries/<<span>country_name</span>></code> - Returns a list of neighbouring countries of a specific country in JSON format</li>
+	<li><code>/same-language-countries/<<span>language</span>></code> - Returns a list of countries having common language in JSON format</li>
+	<li><code>/search-country/<<span>country_name</span>></code> - Returns a country data if exists</li>
+</ol>
+<p align="justify">
+	[N.B.: replace <<span>country_name</span>> with a valid country name e.g. Bangladesh and <<span>language</span>> with a valid language e.g. Bengali]
+</p>
+
 
 
 <h2>Contributors</h2>
