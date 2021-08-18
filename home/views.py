@@ -87,14 +87,24 @@ class Home(APIView):
 			new_password = request.POST['new_password']
 
 			context = {}
-			try: # if successful then already a user exists with requested username/email
-				username_checking = len(User.objects.get(username=new_username))
-				email_checking 	  = len(User.objects.get(email=new_email))
-				existence = ['email', 'username']
-				messages.error(request, 'Requested ' + existence[username_checking] + ' already exists')
+			username_checking = 0
+			try:
+				username_checking = len(User.objects.filter(username=new_username))
+			except:
+				username_checking = 0
+			
+			email_checking = 0
+			try:
+				email_checking = len(User.objects.filter(email=new_email))
+			except:
+				email_checking = 0
+
+			# if username_checking > 0 or  email_checking > 0 then user exists
+			if username_checking + email_checking > 0:
+				messages.error(request, 'Requested ' + ('username' if username_checking > 0 else 'email') + ' already exists')
 				context['user_authenticated'] = 'false'
 			
-			except: # DoesNotExist error means no user exists with requested username & password. Safe to proceed
+			else: # no user exists with requested username & password. Safe to proceed
 				new_user = User.objects.create_user(username=new_username, 
 													email=new_email,
 													password=new_password)

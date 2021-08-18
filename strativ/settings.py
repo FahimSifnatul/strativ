@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-3q+h1*dlyg%s@8zdd_k7rvhlhklpr04ni_(fr54+ls67hd1yd$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['strativ-assignment.herokuapp.com', 'http://127.0.0.1:8000/', '.localhost', '[::1]']
+ALLOWED_HOSTS = ['strativ-assignment.herokuapp.com', '127.0.0.1', '.localhost', '[::1]']
 
 
 # Application definition
