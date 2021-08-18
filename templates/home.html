@@ -74,7 +74,7 @@
 							<td>{{country.timezones}}</td>
 							<td><img src="{{country.flag}}" width="40" height="30"></td>
 							<td>
-								<form id="{{country.name}}" method="POST">
+								<form id="{{country.name}}" method="POST"> {% csrf_token %}
 									<input class="btn btn-primary" type="submit" name="{{country.name}}" value="Details">
 								</form>
 							</td>
@@ -100,7 +100,7 @@
 			<!-- Sign In Form -->
 			<div class="card-body tab-content">
 				<div id="sign_in" class="container tab-pane active">
-					<form id="sign_in_form" method="POST" name="sign_in_form">
+					<form id="sign_in_form" method="POST" name="sign_in_form"> {% csrf_token %}
 						<div class="form-group">
 							<div class="input-group">
 								<div class="input-group-prepend">
@@ -125,7 +125,7 @@
 
 				<!-- Sign Up Form -->
 				<div id="sign_up" class="container tab-pane fade">
-					<form method="POST" name="sign_up_form">
+					<form method="POST" name="sign_up_form"> {% csrf_token %}
 						<div class="form-group">
 							<div class="input-group">
 								<div class="input-group-prepend">

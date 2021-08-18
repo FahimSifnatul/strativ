@@ -43,22 +43,50 @@ class Home(APIView):
 			password = request.POST['password']
 
 			context = {}
-			user = authenticate(username=username, password=password)
-			if user is not None: # user exists
+			user = authenticate(request, username=username, password=password)
+			if user is not None: # user exists - ready to login
 				login(request, user)
 				context['user_authenticated'] = 'true'
 				context['countries'] = Countries.objects.all()
 			else: # no user exists
 				context['user_authenticated'] = 'false'
-				messages.error(request, 'Username-Password mismatch or no user exists with username ' + username)
+				messages.error(request, 'Hey ' + username + ', we appreciate your login try. But would you please check your username and password once more?')
 			return render(request, 'home.html', context)
 
 		elif 'sign_up_submit' in request.POST: # sign up checking
 			new_username = request.POST['new_username']
+			new_email    = request.POST['new_email']
 			new_password = request.POST['new_password']
 
+			context = {}
+			try: # if successful then already a user exists with requested username/email
+				username_checking = len(User.objects.get(username=new_username))
+				email_checking 	  = len(User.objects.get(email=new_email))
+				existence = ['email', 'username']
+				messages.error(request, 'Requested ' + existence[username_checking] + ' already exists')
+				context['user_authenticated'] = 'false'
+			
+			except: # DoesNotExist error means no user exists with requested username & password. Safe to proceed
+				new_user = User.objects.create_user(username=new_username, 
+													email=new_email,
+													password=new_password)
+				new_user.save()
+				user = authenticate(request,username=new_username,
+											password=new_password)
+				if user is not None: # user exists - ready to login
+					login(request, user)
+					context['user_authenticated'] = 'true'
+					context['countries'] = Countries.objects.all()
+					messages.success(request, 'Congratulations ' + new_username + '!!! You are now a member of our Countries!!! family')
+				else: # new user vanished from database 
+					context['user_authenticated'] = 'false'
+					messages.error(request, 'Hurry ' + new_username + '.... Your account has been deleted by someone from database...')
+			
+			return render(request, 'home.html', context)
+
 		else:
-			country_name = list(request.POST.items())[0][0] # To retrieve country name from Form name
+			print(request.POST)
+			country_name = list(request.POST.items())[1][0] # To retrieve country name from Form name
 			country = Countries.objects.get(name=country_name)
 
 			context = {}
