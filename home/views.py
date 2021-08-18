@@ -26,9 +26,10 @@ class Home(APIView):
 	def post(self, request, *args, **kwargs):
 		if 'search_country_submit' in request.POST:
 			name = request.POST['search_country_text']
-			http_response_object = requests.get('http://127.0.0.1:8000/search-country/'+name, params={})
+			# Reason to set password in session variable is that django doesn't store raw password. But for authentication we need raw password.
+			country = requests.get('http://127.0.0.1:8000/search-country/'+name,
+						auth=(request.user.username, request.session['PASSWORD'])).json()
 			
-			country = JSONParser().parse(http_response_object)
 			if len(country) == 0:
 				return HttpResponse("<h1>No country exists with the name '" + name + "'</h1>")
 
@@ -50,8 +51,11 @@ class Home(APIView):
 			user = authenticate(request, username=username, password=password)
 			if user is not None: # user exists - ready to login
 				login(request, user)
+				request.session['PASSWORD'] = password # For API data access purpose
+				
 				context['user_authenticated'] = 'true'
 				context['countries'] = Countries.objects.all()
+			
 			else: # no user exists
 				context['user_authenticated'] = 'false'
 				messages.error(request, 'Hey ' + username + ', we appreciate your login try. But would you please check your username and password once more?')
@@ -81,6 +85,8 @@ class Home(APIView):
 											password=new_password)
 				if user is not None: # user exists - ready to login
 					login(request, user)
+					request.session['PASSWORD'] = new_password # For API data access purpose
+					
 					context['user_authenticated'] = 'true'
 					context['countries'] = Countries.objects.all()
 					messages.success(request, 'Congratulations ' + new_username + '!!! You are now a member of our Countries!!! family')

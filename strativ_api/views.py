@@ -193,7 +193,6 @@ class SameLanguageCountries(APIView):
 
 class SearchCountry(APIView):
 	def get(self, request, country_name, *args, **kwargs):
-		print(request.user)
 		if request.user.is_authenticated:
 			try:
 				# To search partial name as first name of country
