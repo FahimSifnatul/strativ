@@ -1,5 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+from django.contrib.auth.models import User
 from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser
 from urllib.request import urlopen, Request
@@ -11,6 +14,10 @@ from strativ_api.models import Countries
 class Home(APIView):
 	def get(self, request, *args, **kwargs):
 		context = {}
+		if request.user.is_authenticated:
+			context['user_authenticated'] = 'true'
+		else:
+			context['user_authenticated'] = 'false'
 		context['countries'] = Countries.objects.all()
 		return render(request, 'home.html', context)
 
@@ -24,8 +31,32 @@ class Home(APIView):
 				return HttpResponse("<h1>No country exists with the name '" + name + "'</h1>")
 
 			context = {}
+			if request.user.is_authenticated:
+				context['user_authenticated'] = 'true'
+			else:
+				context['user_authenticated'] = 'false'
 			context['countries'] = country
 			return render(request, 'home.html', context)
+		
+		elif 'sign_in_submit' in request.POST: # sign in checking
+			username = request.POST['username']
+			password = request.POST['password']
+
+			context = {}
+			user = authenticate(username=username, password=password)
+			if user is not None: # user exists
+				login(request, user)
+				context['user_authenticated'] = 'true'
+				context['countries'] = Countries.objects.all()
+			else: # no user exists
+				context['user_authenticated'] = 'false'
+				messages.error(request, 'Username-Password mismatch or no user exists with username ' + username)
+			return render(request, 'home.html', context)
+
+		elif 'sign_up_submit' in request.POST: # sign up checking
+			new_username = request.POST['new_username']
+			new_password = request.POST['new_password']
+
 		else:
 			country_name = list(request.POST.items())[0][0] # To retrieve country name from Form name
 			country = Countries.objects.get(name=country_name)

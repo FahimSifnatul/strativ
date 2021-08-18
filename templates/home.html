@@ -32,55 +32,141 @@
 
 <body class="bg-info">
 	<!-- navigation bar -->
-	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+	<nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top">
 		<!-- Logo -->
 		<a class="navbar-brand" href="#">
 	  		<img src="{% static 'images/logo.png' %}" alt="logo" width="32">
 		</a>
 		<!-- Search Country -->
+		{% if user_authenticated == 'true' %}
 		<form id="search_country_form" class="form-inline ml-auto" method="POST" name="search_country_form"> {% csrf_token %}
     		<input id="search_country_text" class="form-control form-control-sm mr-sm-2" type="text" placeholder="Search by country" name="search_country_text">
-    		<button class="btn btn-sm btn-primary" type="submit">Search</button>
+    		<input class="btn btn-sm btn-primary" type="submit" name="search_country_submit" value="submit">
   		</form>
+  		{% endif %}
 	</nav>
 
 	<!-- Table to show country data -->
-	<div class="container-fluid text-center text-primary">
-		<img src="https://i.imgur.com/OCgrAHo.gif" style="width:50vw;height:12vh;">
-	</div>
-	<div class="table-responsive-sm">
-		<table class="container rounded-lg table table-primary table-striped text-center">
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>AlphaCode2</th>
-					<th>Capital</th>
-					<th>Population</th>
-					<th>Timezone</th>
-					<th>Flag</th>
-					<th>Details</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for country in countries %}
-					
+	{% if user_authenticated == 'true' %}
+		<div class="container-fluid text-center text-primary">
+			<img src="https://i.imgur.com/OCgrAHo.gif" style="width:50vw;height:12vh;">
+		</div>
+		<div id="table" class="table-responsive-sm">
+			<table class="container rounded-lg table table-primary table-striped text-center">
+				<thead>
 					<tr>
-						<td>{{country.name}}</td>
-						<td>{{country.alpha2code}}</td>
-						<td>{{country.capital}}</td>
-						<td>{{country.population}}</td>
-						<td>{{country.timezones}}</td>
-						<td><img src="{{country.flag}}" width="40" height="30"></td>
-						<td>
-							<form id="{{country.name}}" method="POST">
-								<input class="btn btn-primary" type="submit" name="{{country.name}}" value="Details">
-							</form>
-						</td>
+						<th>Name</th>
+						<th>AlphaCode2</th>
+						<th>Capital</th>
+						<th>Population</th>
+						<th>Timezone</th>
+						<th>Flag</th>
+						<th>Details</th>
 					</tr>
-				{% endfor %}	
-			</tbody>
-		</table>
-	</div>
+				</thead>
+				<tbody>
+					{% for country in countries %}
+						<tr>
+							<td>{{country.name}}</td>
+							<td>{{country.alpha2code}}</td>
+							<td>{{country.capital}}</td>
+							<td>{{country.population}}</td>
+							<td>{{country.timezones}}</td>
+							<td><img src="{{country.flag}}" width="40" height="30"></td>
+							<td>
+								<form id="{{country.name}}" method="POST">
+									<input class="btn btn-primary" type="submit" name="{{country.name}}" value="Details">
+								</form>
+							</td>
+						</tr>
+					{% endfor %}	
+				</tbody>
+			</table>
+		</div>
+	{% elif user_authenticated == 'false' %}
+		<div class="card mx-auto" style="width:50vw; height:50vh; top: 10vh;">
+			<div class="card-header border-0 bg-dark">
+				<!-- Sign In / Sign Up navs -->
+				<ul class="nav nav-tabs">
+ 					<li class="nav-item">
+    					<a class="nav-link active" data-toggle="tab" href="#sign_in">Sign In</a>
+  					</li>
+  					<li class="nav-item">
+    					<a class="nav-link" data-toggle="tab" href="#sign_up">Sign Up</a>
+  					</li>
+				</ul>
+			</div>
+
+			<!-- Sign In Form -->
+			<div class="card-body tab-content">
+				<div id="sign_in" class="container tab-pane active">
+					<form id="sign_in_form" method="POST" name="sign_in_form">
+						<div class="form-group">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<div class="input-group-text">Username</div>
+								</div>
+								<input class="form-control" type="text" name="username" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<div class="input-group-text">Password</div>
+								</div>
+								<input class="form-control" type="password" name="password" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<input class="btn btn-primary float-right" type="submit" name="sign_in_submit">
+						</div>
+					</form>
+				</div>
+
+				<!-- Sign Up Form -->
+				<div id="sign_up" class="container tab-pane fade">
+					<form method="POST" name="sign_up_form">
+						<div class="form-group">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<div class="input-group-text">Username</div>
+								</div>
+								<input class="form-control" type="text" name="new_username" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<div class="input-group-text">E-mail</div>
+								</div>
+								<input class="form-control" type="email" name="new_email" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<div class="input-group-text">Password</div>
+								</div>
+								<input class="form-control" type="password" name="new_password" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<input class="btn btn-primary float-right" type="submit" name="sign_up_submit">
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	{% endif %}
 
 </body>
+
+{% if messages %}
+	{% for message in messages %}
+		<script>
+			alert("{{message.message}}");
+		</script>
+	{% endfor %}
+{% endif %}
+
 </html>
