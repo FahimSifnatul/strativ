@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -95,6 +95,11 @@ class Home(APIView):
 					messages.error(request, 'Hurry ' + new_username + '.... Your account has been deleted by someone from database...')
 			
 			return render(request, 'home.html', context)
+
+
+		elif 'logout' in request.POST:
+			logout(request) # logging a user out
+			return redirect(reverse('home'), permanent=True)
 
 
 		else: # To display details of the selected country
