@@ -34,7 +34,7 @@
 
 <body class="bg-info">
 	<!-- navigation bar -->
-	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+	<nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top">
 		<!-- Logo -->
 		<a class="navbar-brand" href="http://strativ-assignment.herokuapp.com">
 	  		<img src="{% static 'images/logo.png' %}" alt="logo" width="32">
@@ -50,11 +50,11 @@
 	</nav>
 
 	<!-- Image to show country map -->
-	<div class="card mx-auto" style="width:50vw;height:80vh;top:1vh;">
-		<img class="card-img-top w-100 h-50" src="{{flag}}">
+	<div class="card mx-auto w-50" style="top:1vh;">
+		<img class="card-img-top w-100" src="{{flag}}" style="height:50vh;">
 		<div class="card-body">
 			<div class="card-text table-responsive-sm">
-				<table class="table table-light border-0 w-100">
+				<table class="table table-sm table-light border-0 w-100">
 					<tbody>
 						<tr>
 							<td><b>Country Name:</b></td>
