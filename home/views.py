@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect, reverse
-from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -48,7 +47,8 @@ class Home(APIView):
 							auth=(request.user.username, request.session['PASSWORD'])).json()
 			
 			if len(country) == 0:
-				return HttpResponse("<h1>No country exists with the name '" + name + "'</h1>")
+				messages.error(request, 'No country named ' + name + ' exists yet. Hope you will be president of the country one day.')
+				return redirect(reverse('home'))
 
 			context = {}
 			if request.user.is_authenticated:
